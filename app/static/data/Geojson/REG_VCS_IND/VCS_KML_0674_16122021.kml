@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document id="Rimba_Raya_Project_Area" xsi:schemaLocation="http://www.opengis.net/kml/2.2 http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd http://www.google.com/kml/ext/2.2 http://code.google.com/apis/kml/schema/kml22gx.xsd">
+	<name>Rimba_Raya_Project_Area</name>
+	<Snippet maxLines="0"></Snippet>
+	<Style id="PolyStyle00">
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<LineStyle>
+			<color>ff6e6e6e</color>
+			<width>0.4</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>ffcafaec</color>
+		</PolyStyle>
+	</Style>
+	<Folder id="FeatureLayer0">
+		<name>Rimba_Raya_Project_Area</name>
+		<Snippet maxLines="0"></Snippet>
+		<Placemark id="ID_00000">
+			<name>1</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+
+<head>
+
+<META http-equiv="Content-Type" content="text/html">
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+</head>
+
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+
+<td>1</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+
+<tr>
+
+<td>FID</td>
+
+<td>0</td>
+
+</tr>
+
+<tr bgcolor="#D4E4F3">
+
+<td>Id</td>
+
+<td>0</td>
+
+</tr>
+
+<tr>
+
+<td>LUAS</td>
+
+<td>64164</td>
+
+</tr>
+
+<tr bgcolor="#D4E4F3">
+
+<td>Shape_Leng</td>
+
+<td>198267.424789</td>
+
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+
+</table>
+
+</body>
+
+</html>]]></description>
+			<styleUrl>#PolyStyle00</styleUrl>
+			<MultiGeometry>
+				<Polygon>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								112.1161882678281,-2.76222213886075,0 
+								112.2203039013236,-3.025514670713589,0 
+								112.232111410056,-3.29067111696514,0 
+								112.243879735044,-3.297323797033746,0 
+								112.2442295896206,-3.304570621592054,0 
+								112.2465668051275,-3.30406267565247,0 
+								112.466296493549,-3.382824260767817,0 
+								112.4917000090476,-3.378295384663825,0 
+								112.4965293532184,-3.37472934212332,0 
+								112.5005897259817,-3.364860013733927,0 
+								112.500849460287,-3.363747921065642,0 
+								112.5034914494072,-3.359458282929217,0 
+								112.5089734459556,-3.352788314838418,0 
+								112.5087277966496,-3.348508958014512,0 
+								112.5065579383441,-3.343301274466218,0 
+								112.4842771499458,-3.313358136611272,0 
+								112.4828567685205,-3.312089942382124,0 
+								112.4795812894006,-3.310915779503118,0 
+								112.4792865384308,-3.300496007363135,0 
+								112.4618943512368,-3.264719058868472,0 
+								112.4279632241839,-3.262043488368632,0 
+								112.3287900948425,-3.191757321558546,0 
+								112.3100941265232,-3.167527502832825,0 
+								112.3053594725367,-3.16515782573451,0 
+								112.2835866359633,-3.062810570564222,0 
+								112.2742590607231,-2.997201926544473,0 
+								112.2517882420192,-2.950825319196114,0 
+								112.2460114652325,-2.922800769105287,0 
+								112.2416416867395,-2.888903118332241,0 
+								112.2454477028389,-2.877797854302538,0 
+								112.2598558769234,-2.835756729686709,0 
+								112.1812539349277,-2.752471081596763,0 
+								112.1752579400448,-2.753001274525758,0 
+								112.1622249247404,-2.754576379313087,0 
+								112.1569837613465,-2.755249397859455,0 
+								112.1494588098319,-2.756442111911324,0 
+								112.1443900690236,-2.757279502906763,0 
+								112.1424622476886,-2.757597986804074,0 
+								112.1417841876533,-2.757710005655041,0 
+								112.1405165567865,-2.757919418593458,0 
+								112.1391071836914,-2.758152246658927,0  
+								112.1161882678281,-2.76222213886075,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</MultiGeometry>
+		</Placemark>
+	</Folder>
+</Document>
+</kml>

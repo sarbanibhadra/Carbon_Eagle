@@ -1,0 +1,21 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -75.987144,
+                    -7.083974
+                ]
+            },
+            "properties": {
+                "key": "VCS-985",
+                "name": "Cordillera Azul National Park REDD Project",
+                "price": "1.0400494",
+                "short_description": "The Cordillera Azul National Park REDD+ Project involves preserving 1,351,964 hectares of lowland and montane forests in central Peru. The project aims to prevent deforestation by enhancing park protection, involving local communities and stakeholders in conservation-compatible land-use management, and improving the quality of life for surrounding residents. The project has discovered over 35 new species and is home to rare and endangered species, benefiting more than 180,000 residents from over 200 communities."
+            }
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -67.19637,
+                    -16.12547
+                ]
+            },
+            "properties": {
+                "key": "VCS-2089",
+                "name": "Rio Taquesi Hydroelectric Power Project",
+                "price": "1.1373713",
+                "short_description": "This carbon project, with the CDM Project ID 1031, converted units into VCUs in compliance with VCS requirements. For more details, please visit the project's page on the UNFCCC CDM website."
+            }
+        }
+    ]
+}

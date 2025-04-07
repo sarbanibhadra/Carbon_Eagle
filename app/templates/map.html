@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Air Pollution Tracker 123</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
+    
+    <link
+    href="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css"
+    rel="stylesheet"
+    />
+    <script
+    async
+    defer
+    src="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js"
+    ></script>
+
+    <!-- c3 for charting, based on d3 -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.css"
+      rel="stylesheet"
+    />
+    <!-- Remove if you don't need zoom to Features -->
+   
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    </script>
+
+    <script src="https://unpkg.com/@turf/turf/turf.min.js"></script>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.css" type="text/css">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+
+
+  </head>
+
+
+  <body>
+    
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+
+    <div class="viewport-full relative scroll-hidden">
+      <div id="map" class="bg-darken10 viewport-half viewport-full-ml absolute top left right bottom">
+      </div>
+
+      
+      
+
+      <div id="menu" >
+      <div class='toggle-group mr18'>
+        <label class='toggle-container'>
+          <input id="ckt4b0tjd0w6w18qwv6umkoig" checked name='toggle-1' type='radio' />
+          <div class='toggle'>Light</div>
+        </label>
+
+        <label class='toggle-container'>
+          <input id="cl11x91x800l514mdmf4p3bdm" name='toggle-1' type='radio' />
+          <div class='toggle'>Dark</div>
+        </label>
+
+        <label class='toggle-container'>
+          <input id="cl1202y36001h14t2alj2qo7k" name='toggle-1' type='radio' />
+          <div class='toggle'>Regions</div>
+        </label>
+
+
+        <label class='switch-container'>
+          <input id="NO2 layer" checked name='switch-1' type='checkbox' />
+          <div class='toggle'>Model Layer</div>
+        </label>
+
+        <input id='current date' class='input input--border-grey w240' type='date' value='2020-01-01'/>
+
+      </div>
+      </div>
+
+      <div
+        id="legend"
+        class="w300 my36 mx12 px12 py12 absolute z1 right bottom bg-light-grey round-ml shadow-darken10 none"
+      >
+        <div id="legend-colors" class="grid mb6"></div>
+        <div id="legend-values" class="grid txt-xs"></div>
+      </div>
+
+
+      <div
+        id="sidebar"
+        class="absolute top-ml bottom left z1 w600-ml px0 py60-ml events-none"
+      >
+        <div
+          class="flex-parent flex-parent--column viewport-half h-auto-ml hmax-full bg-white round-ml shadow-darken10 events-all"
+        >
+          <div class="px0 py0">
+            
+            <button id = "expansion_indus" class="collapsible"> Industrial Emissions </button>
+            <div class="content">
+              <p id="indus-description" class="s block-mm py6"></p>
+              <div id="chart_indus"></div>
+              <div id="chart_indus_predict_year"></div>
+              <div id="chart_indus_predict"></div>
+            </div>
+            <button id = "expansion_station" class="collapsible">Air Quality Monitoring Stations</button>
+            <div class="content">
+              <p id="station-description" class="none block-mm py6"></p>
+              <div id="chart_station"></div>
+              <div id="gauge_accuracy"></div>
+            </div>
+          </div>
+        </div> 
+      </div>
+
+    <div
+      id="sidebar right"
+      class="absolute top-ml bottom right z1 w600-ml px60 py60-ml events-none"
+    >
+      <div
+        class="flex-parent flex-parent--column viewport-half h-auto-ml hmax-full bg-white round-ml shadow-darken10 events-all"
+      >
+        <div class="px0 py0">   
+          <button id = "expansion_exposure" class="collapsible">Human Exposure to NO2 </button>
+          <div class="content">
+            <p id="exposure-description" class="s block-mm py6"></p>
+            <div id="chart_annual_mean"></div>
+            <div id="chart_daily_concentration"></div>
+            <div id="gauge_exposure"></div>
+            <div id="gauge_population"></div>
+          </div>         
+        </div>
+      </div> 
+    </div>
+     
+  </body>
+  <script src="{{ url_for('static', filename='description.js') }}"></script>
+  <script src="{{ url_for('static', filename='legend.js') }}"></script>
+  <script src="{{ url_for('static', filename='map.js') }}"></script>
+  <script src="{{ url_for('static', filename='menu.js') }}"></script>
+  <script src="{{ url_for('static', filename='controls.js') }}"></script>
+  <script src="{{ url_for('static', filename='left_panel.js') }}"></script>
+  <script src="{{ url_for('static', filename='right_panel.js') }}"></script>
+  <script src="{{ url_for('static', filename='onclick.js') }}"></script>
+</html>

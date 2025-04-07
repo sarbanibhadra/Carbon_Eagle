@@ -1,0 +1,21 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -78.93144,
+                    -2.966041
+                ]
+            },
+            "properties": {
+                "key": "VCS-1883",
+                "name": "Pichacay Landfill Gas Renewable Energy Project",
+                "price": "1.1321479",
+                "short_description": "The Pichacay Landfill Gas Renewable Energy project in Ecuador collects methane gas from the Pichacay landfill, which was previously released into the atmosphere. The collected gas is then used to generate electricity that is delivered to the grid, reducing greenhouse gas emissions. This project underwent a public comment period from April to May 2019 and received no comments."
+            }
+        }
+    ]
+}

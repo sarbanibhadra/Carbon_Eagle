@@ -1,0 +1,8 @@
+[
+    {
+      "origin": ["https://helloworld-gee-app.ew.r.appspot.com", "http://127.0.0.1:5000"],
+      "responseHeader": ["x-meta-goog-custom"],
+      "method": ["GET", "HEAD", "DELETE"],
+      "maxAgeSeconds": 3600
+    }
+]

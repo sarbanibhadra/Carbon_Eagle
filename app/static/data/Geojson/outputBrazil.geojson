@@ -1,0 +1,165 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -59.355406,
+                    -9.165371
+                ]
+            },
+            "properties": {
+                "key": "VCS-875",
+                "name": "Florestal Santa Maria Project",
+                "price": "1.0466833",
+                "short_description": "The FSM-REDD Project, proposed by Florestal Santa Maria S/A, is located in Colniza Municipality, Mato Grosso, Brazil, and aims to combat the intense deforestation pressure in the region. The project estimates the avoidance of 29,923,331 tCO2 throughout 30 years by protecting 71,714 hectares of native forest on private land owned by FSM. The project also promotes local socio-environmental development through partnerships with a neighboring State Park and Colniza City Hall for education initiatives."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -70.177176,
+                    -8.847445
+                ]
+            },
+            "properties": {
+                "key": "VCS-1382",
+                "name": "The Envira Amazonia Project - A Tropical Forest Conservation Project In Acre, Brazil",
+                "price": "1.0548018",
+                "short_description": "The Envira Amazonia Project in Brazil aimed to protect up to 200,000 hectares of tropical rainforest and preserve rich biodiversity and ecosystem services. It also provided direct benefits to local communities while mitigating the release of ~12.6 million metric tonnes of carbon dioxide emissions over the first 10 years of the Project."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -69.069997,
+                    -8.44646
+                ]
+            },
+            "properties": {
+                "key": "VCS-1686",
+                "name": "Agrocortex REDD Project",
+                "price": "1.0548018",
+                "short_description": "The Agrocortex REDD Project aims to prevent the unplanned deforestation of 186,369.66 ha of Amazon rainforest in the South-western region of Brazil. The project also establishes a barrier against deforestation and contributes to the conservation of the region's biodiversity and climate regulation. Public comments were open from 12 May - 11 June 2017, with no comments received."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -51.188205,
+                    -2.893955
+                ]
+            },
+            "properties": {
+                "key": "VCS-981",
+                "name": "Pacajai REDD+ Project",
+                "price": "1.0548018",
+                "short_description": "This project aimed to stop deforestation within private parcels in Brazil, covering 135,105 hectares at the edge of the deforestation frontier. It generated various benefits for the climate, social welfare, and biodiversity."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -51.216667,
+                    -27.766667
+                ]
+            },
+            "properties": {
+                "key": "VCS-10",
+                "name": "Baesa Project",
+                "price": "1.2806495",
+                "short_description": "This carbon project reduces greenhouse gas emissions by using renewable energy and clean technology to generate electricity in Brazil. The installation of HPP Barra Grande generates enough electricity to supply 30% of the energy demand in Santa Catarina or 20% of the total energy consumed in Rio Grande do Sul, contributing to environmental, social and economical sustainability."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -50.427069,
+                    -1.050581
+                ]
+            },
+            "properties": {
+                "key": "VCS-1094",
+                "name": "Ecomapua Amazon REDD Project",
+                "price": "1.2806495",
+                "short_description": "The Ecomapu\u00e1 Amazon REDD Project is located on Maraj\u00f3 Island in Brazil's Eastern Amazon region, and aims to prevent unplanned deforestation of a valuable ecosystem. Predicted net reductions of 4,253.14ha of deforestation and 2,170,138 tCO2e emissions over the 30-year project lifetime make this project a significant contribution to conservation goals and improving social and environmental conditions for local communities. The project also encourages further conservation efforts in this critical region."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -49.466667,
+                    -27.1
+                ]
+            },
+            "properties": {
+                "key": "VCS-513",
+                "name": "Salto Pil\u00e3o Hydropower Plant Project Activity",
+                "price": "1.2806495",
+                "short_description": "The Salto Pil\u00e3o project in Brazil involved building a hydropower plant with a reservoir covering 0.15 km2 and generating 191.8 MW of power. The plant is located in the state of Santa Catarina and has been licensed for construction."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -53.367499,
+                    -29.12
+                ]
+            },
+            "properties": {
+                "key": "VCS-708",
+                "name": "Engenheiro Ernesto Jorge Dreher And Engenheiro Henrique Kotzian Shps VCS Project (Jun1120)",
+                "price": "1.2806495",
+                "short_description": "This project generates electricity using renewable hydropower plants in J\u00falio de Castilhos and Salto Jacu\u00ed, Brazil. The project includes two plants, the Engenheiro Ernesto Jorge Dreher SHP and the Engenheiro Henrique Kotzian SHP, with installed powers of 17.95 MW and 13.230 MW, respectively. The project aims to reduce the use of fossil fuel-based power generation and provide electricity to the National Interconnected System."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -53.043326,
+                    -27.14
+                ]
+            },
+            "properties": {
+                "key": "VCS-896",
+                "name": "Foz Do Chapec\u00f3 Project",
+                "price": "1.2806495",
+                "short_description": "The Foz do Chapec\u00f3 Hydroelectric Project generates low emissions electricity for the Brazilian Interconnected System by using hydrological resources of the Uruguay River. The project consists of four sets of hydroelectric Francis type turbines with a total installed capacity of 855 MW, and aims to reduce greenhouse gas emissions by displacing carbon-intensive electricity."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -53.05434003576711,
+                    -10.806773643498916
+                ]
+            },
+            "properties": {
+                "key": "PUR-175613",
+                "name": "Aperam BioEnergia",
+                "price": "210",
+                "short_description": "Aperam BioEnergia, a leader in Brazil\u2019s forestry and renewable energy sectors, operates a 420,000-ton/year charcoal facility using FSC-certified forests. Their biochar project repurposes waste from charcoal production to enhance soil quality and sequester carbon, aiding biodiversity and local economies. With a focus on sustainability, the company plans to expand biochar operations to boost forest productivity and community development without increasing fossil fuel reliance. This initiative is part of Aperam's commitment to innovative environmental stewardship."
+            }
+        }
+    ]
+}

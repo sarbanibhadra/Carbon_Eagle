@@ -1,0 +1,37 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -68.393333,
+                    4.244444
+                ]
+            },
+            "properties": {
+                "key": "VCS-1566",
+                "name": "REDD+ Project Resguardo Indigena Unificado Selva De Mataven (Riu Sm)",
+                "price": "1.0352693",
+                "short_description": "The REDD+ Project Resguardo Ind\u00edgena Unificado-Selva de Mataven (REDD+ RIU-SM) is a participatory project that aims to establish an integrated management system for forests and lands, ensuring their sustainability and mitigating threats to conservation. The project uses the REDD+ approach to provide compensation payments for ecosystem services, specifically for 'Avoiding Unplanned Deforestation and Degradation (AUDD)' in the Indigenous Reservation of Vichada, Colombia. The project adheres to the standards established by the VCS."
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -78.1837269878,
+                    1.7654028613
+                ]
+            },
+            "properties": {
+                "key": "ECO-114",
+                "name": "PROYECTO REDD+ PAZC\u00cdFICO SUR",
+                "price": "180",
+                "short_description": null
+            }
+        }
+    ]
+}

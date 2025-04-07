@@ -1,0 +1,6 @@
+runtime: python310
+
+instance_class: F4_1G
+
+includes:
+  - env_variables.yaml

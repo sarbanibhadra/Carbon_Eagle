@@ -1,0 +1,63 @@
+{
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "geometry": {"type":"Point","coordinates":[-53.043326,-27.14]},
+            "properties": {
+                "key":"VCS-896",
+                "projectID":"896",
+                "name":"Foz Do Chapecó Project",
+                "methodologies_id":"ACM0002",
+                "methodologies_category":"Renewable Energy",
+                "methodologies_name":"Grid-connected electricity generation from renewable sources",
+                "vintages":["2012","2011"],
+                "registry":"VCS",
+                "updatedAt":"1705288365",
+                "country":"Brazil",
+                "region":"Latin America",
+                "price":"1.2744563",
+                "totalBridged":367818,
+                "totalRetired":1,
+                "totalSupply":367817,
+                "totalListingsSupply":0,
+                "totalPoolsSupply":367817,
+                "hasSupply":true,
+                "sustainableDevelopmentGoals":["7","8","9","13"],
+                "description":"Foz do Chapecó Hydroelectric Project developed by Foz do Chapecó Energia S/A consists of the installation of a hydroelectric plant, located in the verge of Águas de Chapecó municipality, in Santa Catarina State, and Alpestre municipality, in Rio Grande do Sul State. Total installed capacity of the Project will be 855 MW, consisting of four sets of hydroelectric Francis type turbines with nominal capacity 217.14 MW and the electricity generator nominal power is 213.75. The purpose of the Project is to use the hydrological resources of the Uruguay River in order to generate low emissions electricity for the Brazilian Interconnected System (SIN – Sistema Interligado Nacional), thereby displacing electricity that is relatively carbon intensive, and reducing greenhouse gas (GHG) emissions",
+                "long_description":"The Foz do Chapecó Hydroelectric Project is a sustainable energy project developed by Foz do Chapecó Energia S/A. The hydroelectric plant is located in Águas de Chapecó municipality in Santa Catarina State and Alpestre municipality in Rio Grande do Sul State. The project aims to generate low emissions electricity for the Brazilian Interconnected System (SIN – Sistema Interligado Nacional), by utilizing the hydrological resources of the Uruguay River. \n\nKey Highlights:\n- The total installed capacity of the project is 855 MW, which consists of four sets of hydroelectric Francis type turbines with nominal capacity 217.14 MW.\n- The electricity generator nominal power is 213.75.\n- The project generates low emissions electricity that displaces carbon-intensive electricity, thereby reducing greenhouse gas (GHG) emissions.\n- The Foz do Chapecó Hydroelectric Project utilizes renewable and sustainable energy sources, which helps to promote a greener future.\n\nThe Foz do Chapecó Hydroelectric Project is an important project for Brazil's sustainable energy future. It promotes the use of renewable and sustainable energy sources, which is crucial for reducing greenhouse gas emissions. By generating low emissions electricity, the project helps to displace carbon-intensive electricity and contributes to a cleaner environment. The project also provides a reliable source of electricity to the Brazilian Interconnected System (SIN – Sistema Interligado Nacional), which helps to ensure a stable and secure energy supply for the country.",
+                "short_description":"The Foz do Chapecó Hydroelectric Project generates low emissions electricity for the Brazilian Interconnected System by using hydrological resources of the Uruguay River. The project consists of four sets of hydroelectric Francis type turbines with a total installed capacity of 855 MW, and aims to reduce greenhouse gas emissions by displacing carbon-intensive electricity.",
+                "url":"https://registry.verra.org/app/projectDetail/VCS/896" 
+                }
+          },
+          {
+            "type": "Feature", 
+            "geometry":{"type":"Point","coordinates":[-59.355406,-9.165371]},
+            "properties": {
+                "key":"VCS-875",
+                "projectID":"875",
+                "name":"Florestal Santa Maria Project",
+                "methodologies_id":"VM0007",
+                "methodologies_category":"Forestry",
+                "methodologies_name":"REDD+ Methodology Framework (REDD+MF)",
+                "vintages":["2013","2015","2012","2014","2016"],
+                "registry":"VCS",
+                "updatedAt":"1706418438",
+                "country":"Brazil",
+                "region":"Latin America",
+                "price":"1.0230454",
+                "totalBridged":184605,
+                "totalRetired":271.01,
+                "totalSupply":170983.99,
+                "totalListingsSupply":0,
+                "totalPoolsSupply":170983.99,
+                "hasSupply":true,
+                "sustainableDevelopmentGoals":["13","15"],
+                "description":"https://santamariaproject.com/ - The FSM-REDD Project, proposed by Florestal Santa Maria S/A (FSM), is located in Colniza Municipality, Mato Grosso, Brazil. This region is part of the Brazilian Amazon and known as Deforestation Arch, due to the intense deforestation pressure. As an alternative to combat this, FSM-REDD Project estimates the avoidance of 29,923,331 tCO2 throughout 30 years within Fazenda Florestal Santa Maria – private land owned by FSM, comprising 71,714 ha. of native forest. FSM is committed to local socio-environmental development. Project activities encompass a partnership with a neighboring State Park, promoting local initiatives to create fire brigades. Also, FSM will create together with Colniza City Hall, technical forestry schools targeting education of local youngsters.",
+                "long_description":"Florestal Santa Maria S/A (FSM) has proposed the FSM-REDD Project to combat deforestation in the Colniza Municipality of Mato Grosso, Brazil, which is a part of the Brazilian Amazon and known as the Deforestation Arch. The FSM-REDD Project aims to avoid the emission of 29,923,331 tCO2 over 30 years within the Fazenda Florestal Santa Maria, which is a private land owned by FSM and covers 71,714 hectares of native forest. \n\nKey Highlights:\n- The FSM-REDD Project estimates the avoidance of nearly 30 million tCO2 emissions over 30 years.\n- The project is located in the Deforestation Arch, which is a region with high deforestation pressure.\n- FSM is committed to local socio-environmental development and has partnered with a neighboring State Park to create fire brigades and technical forestry schools for local youngsters.\n\nThe FSM-REDD Project is important because it not only aims to combat deforestation but also promotes socio-environmental development in the local community through various initiatives. FSM's partnership with the State Park and Colniza City Hall will provide opportunities for local youngsters to learn about forestry and create fire brigades to combat forest fires. The project's efforts to reduce emissions will also contribute to the global fight against climate change.",
+                "short_description":"The FSM-REDD Project, proposed by Florestal Santa Maria S/A, is located in Colniza Municipality, Mato Grosso, Brazil, and aims to combat the intense deforestation pressure in the region. The project estimates the avoidance of 29,923,331 tCO2 throughout 30 years by protecting 71,714 hectares of native forest on private land owned by FSM. The project also promotes local socio-environmental development through partnerships with a neighboring State Park and Colniza City Hall for education initiatives.",
+                 "url":"https://registry.verra.org/app/projectDetail/VCS/875"
+                }
+          }
+        ]
+}

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Biomass Monitor</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+
+    <!-- Bootstrap CSS ** added on 03/09/2024 ** -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css" rel="stylesheet"/>
+    <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js"></script>
+
+    <!-- c3 for charting, based on d3 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.css" rel="stylesheet"/>
+    <!-- Remove if you don't need zoom to Features -->
+   
+    <!-- Bootstrap JS (with Popper.js for tooltips and popovers) ** added on 03/09/2024 ** -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/@turf/turf/turf.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.css" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM0Tif8HI0YZ9EzQpXRi4p7zz2KzK+Mgp0GFAYa" crossorigin="anonymous"> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Adding Font Awesome for adding arrow in dropdown menu -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/togeojson/0.16.0/togeojson.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/togeojson/0.16.0/togeojson.js"></script>
+  </head>
+
+
+  <body>
+    
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+
+    <div class="viewport-full relative scroll-hidden">
+      <div id="map" class="bg-darken10 viewport-half viewport-full-ml absolute top left right bottom">
+      </div>
+      <div id="menu" >
+      </div>
+      <div
+        id="legend"
+        class="w300 my36 mx12 px12 py12 absolute z1 right bottom bg-light-grey round-ml shadow-darken10 none"
+      >
+        <div id="legend-text" align="middle">AGB in (t)</div>
+        <div id="legend-colors" class="grid mb6"></div>
+        <div id="legend-values" class="grid txt-xs"></div>
+      </div>
+      <!-- The Modal Map Layers -->
+      <div id="layerModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-content custom-modal-bg modal-dialog">
+          <div class="custom-modal-header">
+            <h3 class="modal-title custom-modal-header-text">
+              Map Layers
+            </h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; right: 30px;"></button>
+          </div>
+          <div class="modal-body">
+            
+            <div class="form-check modal-layer">
+              <label for="layer1-checkbox" class="custom-modal-text"> Global AGB Map</label>
+              <input type="checkbox" id="layer1-checkbox" name="layer-checkbox" value="Layer 1" style="accent-color: green; transform: scale(1.5)" onclick="checkOnlyOne(this)">
+            </div>
+            <div class="form-check modal-layer">
+              <label for="layer2-checkbox" class="custom-modal-text"> Global Carbon Stock Map</label>
+              <input type="checkbox" id="layer2-checkbox" name="layer-checkbox" value="Layer 2" style="accent-color: green; transform: scale(1.5)" onclick="checkOnlyOne(this)">
+            </div>
+            <div class="form-group d-flex align-items-center modal-layer">
+              <!-- <label for="layer1-checkbox"> Select Year</label>
+            <select id='current date' name="select" style="background-color: rgb(168, 233, 168); transform: scale(1.1)" >
+              -->
+            <label for="select-year" class="custom-modal-text"> Select Year</label>
+            <select id="select-year" name="select" style="background-color: rgb(168, 233, 168); transform: scale(1.1)" >
+              <option value="" selected="selected"></option>
+              <option value="2011">2011</option>
+              <option value="2012">2012</option>
+              <option value="2013">2013</option>
+              <option value="2014">2014</option>
+              <option value="2015">2015</option>
+              <option value="2016">2016</option>
+              <option value="2017">2017</option>
+              <option value="2018">2018</option>
+              <option value="2019">2019</option>
+              <option value="2020">2020</option>
+              <option value="2021">2021</option>
+              <option value="2021">2022</option>
+              <option value="2023">2023</option>
+            </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- The Modal Project Variables -->
+      <div id="propModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-content custom-modal-bg modal-dialog ">
+          <div class="custom-modal-header m-2">
+            <h3 class="modal-title custom-modal-header-text">
+              Project Variables
+            </h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; right: 30px;"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Form Fields -->
+            <form>
+              <div class="mb-3">
+                <label for="projectDuration" class="form-label custom-modal-text">Carbon Project Duration (years)</label>
+                <input type="number" class="form-control modal-layer" id="projectDuration" placeholder="30" style="font-weight: bold;">
+              </div>
+              <div class="mb-3">
+                <label for="developmentCost" class="form-label custom-modal-text">Project Establishment Cost ($/ha)</label>
+                <input type="number" class="form-control modal-layer" id="developmentCost" placeholder="25" style="font-weight: bold;">
+              </div>
+              <div class="mb-3">
+                <label for="maintenanceCost" class="form-label custom-modal-text">Project Annual Maintenance Cost ($/ha)</label>
+                <input type="number" class="form-control modal-layer" id="maintenanceCost" placeholder="10" style="font-weight: bold;">
+              </div>
+              <div class="mb-3">
+                <label for="carbonPrice" class="form-label custom-modal-text">Starting Carbon Price for first 5 Years ($/ton)</label>
+                <input type="number" class="form-control modal-layer" id="carbonPrice" placeholder="5.8" style="font-weight: bold;">
+              </div>
+              <div class="mb-3">
+                <label for="annualAppreciation" class="form-label custom-modal-text">Carbon Price Appreciation for Subsequent Years ($)</label>
+                <input type="number" class="form-control modal-layer" id="annualAppreciation" placeholder="0.05" style="font-weight: bold;">
+              </div>
+              <div class="mb-3">
+                <label for="discountRate" class="form-label custom-modal-text">NPV Discount Rate (%)</label>
+                <input type="number" class="form-control modal-layer" id="discountRate" placeholder="0.1" style="font-weight: bold;">
+              </div>
+              <div class="mb-3" align="middle">
+                <button id="calculateButton"  style="align-items: center; text-align: center; background-color: green; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 20px;">
+                  Calculate
+                </button>
+              </div>
+            </form>
+          </div>
+            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#barModal">
+              Calculate
+            </button> -->
+        </div>
+      </div>
+      <!-- Waiting status -->
+      <div id="waitingStatus" style="display:none;">
+        Loading, please wait...
+      </div>
+      <!-- The Modal Forest Carbon Data -->
+      <div class="modal" id="barModal" tabindex="-1" aria-labelledby="barModalLabel" aria-hidden="true"  data-bs-backdrop="true" data-bs-keyboard="true">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content p-3">
+            <div class="custom-modal-header m-2">
+              <h3 class="modal-title" id="barModalLabel"  style="color: green; text-align: center; font-weight: bold; font-size: 28px; ">
+                Forest Carbon Data
+              </h3>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; right: 30px;"></button>
+            </div>
+            <div class="modal-body px-4">
+              <div class="row text-center mb-0.5">
+                <!-- Total Area, Carbon Dioxide, ROI Section -->
+                <div class="col-md-6 border border-success rounded p-2 bg-light display: none">
+                  <div class="mb-1" style="font-weight: bold; font-size: larger;">Total Area in Polygon</div>
+                  <div id="area" class="fs-5 text-success" style="font-weight: bold"></div>
+            
+                  <div class="mb-1 mt-2" style="font-weight: bold; font-size: larger;">Carbon Dioxide Equivalent (tCO2e)</div>
+                  <div id="ton" class="fs-5 text-success" style="font-weight: bold"></div>
+            
+                  <div class="mb-1 mt-2" style="font-weight: bold; font-size: larger;">Return-on-Investment (ROI)</div>
+                  <div id="price" class="fs-5 text-success" style="font-weight: bold"></div>
+                </div>
+                <!-- Modal Map Section -->
+                <div class="col-md-12 border border-success rounded p-3 bg-light">
+                  <div id="area" class="fs-5 text-success" style="font-weight: bold"></div>
+                  <div id="modalMap" class="border" style="width: 100%; height: 200px; overflow-y: auto;"></div>
+                </div>
+              </div>
+              <!-- Charts Section -->
+              <div class="row text-center mb-0.5">
+                <div class="col-md-12 border border-success rounded p-3 bg-light">
+                  <div class="mb-3" style="font-weight: bold; font-size: larger;">Year-to-year past AGB data in Polygon</div>
+                  <div id="chart_annual_mean"></div>
+                </div>
+            
+                <div class="col-md-6 border border-success rounded p-3 bg-light display: none">
+                  <div class="mb-3" style="font-weight: bold; font-size: larger;">Future NPV (USD/Year) Values in Polygon</div>
+                  <div id="chart_ROI_NPV_USDperYear"></div>
+                </div>
+              </div>
+              <div class="row text-center mb-0.5 display: none">
+                <div class="col-md-6 border border-success rounded p-3 bg-light">
+                  <div class="mb-3" style="font-weight: bold; font-size: larger;">Project Assumptions</div>
+                  <div id="projectDurationOp" class="custom-modal-text"></div>
+                  <div id="developmentCostOp" class="custom-modal-text"></div>
+                  <div id="maintenanceCostOp" class="custom-modal-text"></div>
+                  <div id="carbonPriceOp" class="custom-modal-text"></div>
+                  <div id="annualAppreciationOp" class="custom-modal-text"></div>
+                  <div id="discountRateOp" class="custom-modal-text">NPV Discount Rate (%): </div>
+                </div>        
+                <div class="col-md-6 border border-success rounded p-3 bg-light">
+                  <div class="mb-3" style="font-weight: bold; font-size: larger;">Project ROI Analysis</div>
+                  <div id="analysis" class="custom-modal-text"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </body>
+  <script src="{{ url_for('static', filename='description.js') }}"></script>
+  <script src="{{ url_for('static', filename='legend.js') }}"></script>
+  <script src="{{ url_for('static', filename='map_agb.js') }}"></script>
+  <script src="{{ url_for('static', filename='menu.js') }}"></script>
+  <script src="{{ url_for('static', filename='controls_agb.js') }}"></script>
+  <script src="{{ url_for('static', filename='left_panel.js') }}"></script>
+  <script src="{{ url_for('static', filename='right_panel_agb.js') }}"></script>
+  <script src="{{ url_for('static', filename='onclick.js') }}"></script>
+</html>

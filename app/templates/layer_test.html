@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Mapbox Layer Toggle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        .sidebar { position: absolute; top: 10px; left: 10px; background: white; padding: 10px; border-radius: 5px; }
+        .layer-icon { cursor: pointer; padding: 5px; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="sidebar">
+        <div class="layer-icon" id="toggle-layer1">Layer 1</div>
+        <div class="layer-icon" id="toggle-layer2">Layer 2</div>
+    </div>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoiam50dWNjZWxsYSIsImEiOiJja3VyNW84eDIwZzZ3Mm5sbjJ4bmk5ZW5pIn0.pJS-tfqDmr1IfUajBzMggQ';
+
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-74.5, 40],
+            zoom: 9
+        });
+
+        map.on('load', () => {
+            map.addLayer({
+                'id': 'layer1',
+                'type': 'circle',
+                'source': {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'FeatureCollection',
+                        'features': [{
+                            'type': 'Feature',
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-74.5, 40]
+                            }
+                        }]
+                    }
+                },
+                'paint': {
+                    'circle-radius': 10,
+                    'circle-color': '#007cbf'
+                }
+            });
+
+            map.addLayer({
+                'id': 'layer2',
+                'type': 'fill',
+                'source': {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'FeatureCollection',
+                        'features': [{
+                            'type': 'Feature',
+                            'geometry': {
+                                'type': 'Polygon',
+                                'coordinates': [[
+                                    [-74.5, 40],
+                                    [-74, 40],
+                                    [-74, 39.5],
+                                    [-74.5, 39.5],
+                                    [-74.5, 40]
+                                ]]
+                            }
+                        }]
+                    }
+                },
+                'paint': {
+                    'fill-color': '#088',
+                    'fill-opacity': 0.8
+                }
+            });
+
+            document.getElementById('toggle-layer1').addEventListener('click', () => {
+                const visibility = map.getLayoutProperty('layer1', 'visibility');
+                if (visibility === 'visible') {
+                    map.setLayoutProperty('layer1', 'none');
+                } else {
+                    map.setLayoutProperty('layer1', 'visible');
+                }
+            });
+
+            document.getElementById('toggle-layer2').addEventListener('click', () => {
+                const visibility = map.getLayoutProperty('layer2', 'visibility');
+                if (visibility === 'visible') {
+                    map.setLayoutProperty('layer2', 'none');
+                } else {
+                    map.setLayoutProperty('layer2', 'visible');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Mapbox Layer Toggle Modal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        .sidebar { position: absolute; top: 10px; left: 10px; }
+        .layer-icon { cursor: pointer; padding: 10px; display: flex; align-items: center; background: white; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
+        .layer-icon i { margin-right: 10px; }
+
+        /* Modal Styles */
+        .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4); }
+        .modal-content { background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 500px; }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
+        .close:hover, .close:focus { color: black; text-decoration: none; cursor: pointer; }
+        .modal-layer { cursor: pointer; padding: 10px; display: flex; align-items: center; border: 1px solid #ddd; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="sidebar">
+        <div class="layer-icon" id="open-modal"><i class="fas fa-layer-group"></i> Select Layers</div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="layerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-layer" id="modal-layer1"><i class="fas fa-map-marker-alt"></i> Layer 1</div>
+            <div class="modal-layer" id="modal-layer2"><i class="fas fa-draw-polygon"></i> Layer 2</div>
+        </div>
+    </div>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoiam50dWNjZWxsYSIsImEiOiJja3VyNW84eDIwZzZ3Mm5sbjJ4bmk5ZW5pIn0.pJS-tfqDmr1IfUajBzMggQ';
+
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-74.5, 40],
+            zoom: 9
+        });
+
+        map.on('load', () => {
+            map.addLayer({
+                'id': 'layer1',
+                'type': 'circle',
+                'source': {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'FeatureCollection',
+                        'features': [{
+                            'type': 'Feature',
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [-74.5, 40]
+                            }
+                        }]
+                    }
+                },
+                'paint': {
+                    'circle-radius': 10,
+                    'circle-color': '#007cbf'
+                }
+            });
+
+            map.addLayer({
+                'id': 'layer2',
+                'type': 'fill',
+                'source': {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'FeatureCollection',
+                        'features': [{
+                            'type': 'Feature',
+                            'geometry': {
+                                'type': 'Polygon',
+                                'coordinates': [[
+                                    [-74.5, 40],
+                                    [-74, 40],
+                                    [-74, 39.5],
+                                    [-74.5, 39.5],
+                                    [-74.5, 40]
+                                ]]
+                            }
+                        }]
+                    }
+                },
+                'paint': {
+                    'fill-color': '#088',
+                    'fill-opacity': 0.8
+                }
+            });
+
+            document.getElementById('modal-layer1').addEventListener('click', () => {
+                const visibility = map.getLayoutProperty('layer1', 'visibility');
+                if (visibility === 'visible') {
+                    map.setLayoutProperty('layer1', 'none');
+                } else {
+                    map.setLayoutProperty('layer1', 'visible');
+                }
+            });
+
+            document.getElementById('modal-layer2').addEventListener('click', () => {
+                const visibility = map.getLayoutProperty('layer2', 'visibility');
+                if (visibility === 'visible') {
+                    map.setLayoutProperty('layer2', 'none');
+                } else {
+                    map.setLayoutProperty('layer2', 'visible');
+                }
+            });
+        });
+
+        // Get the modal
+        var modal = document.getElementById("layerModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("open-modal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on the button, open the modal
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

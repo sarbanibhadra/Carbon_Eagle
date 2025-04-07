@@ -1,0 +1,28 @@
+name: testapp
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pip
+  - python>=3.7
+  - netcdf4
+  - rioxarray
+  - xarray
+  - numpy
+  - pandas
+  - geopandas
+  - scipy
+  - pip:
+    - requests
+    - folium
+    - flask
+    - flask-mail
+    - flask-wtf
+    - gunicorn
+    - werkzeug
+    - email-validator
+      #- netCDF4==1.5.7
+    - google-cloud-storage
+    - Pyrebase
+    - firebase-admin
+
