@@ -149,6 +149,10 @@
       <div class="modal" id="barModal" tabindex="-1" aria-labelledby="barModalLabel" aria-hidden="true"  data-bs-backdrop="true" data-bs-keyboard="true">
         <div class="modal-dialog modal-xl">
           <div class="modal-content p-3">
+            <div class="mb-3">
+              <label for="projectNameInput" style="font-weight:bold;">Project Name</label>
+              <input type="text" id="projectNameInput" class="form-control" placeholder="Enter project name">
+            </div>
             <div class="custom-modal-header m-2">
               <h3 class="modal-title" id="barModalLabel"  style="color: green; text-align: center; font-weight: bold; font-size: 28px; ">
                 Revenue Report on Forest Carbon Data
@@ -206,6 +210,9 @@
             </div>
             <button id="savePdfBtn" class="btn btn-sm">
               Save as PDF
+            </button>
+            <button id="saveProjectBtn" class="btn btn-sm btn-success ms-2">
+              Save Project
             </button>
           </div>
         </div>

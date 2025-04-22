@@ -303,3 +303,61 @@ document.getElementById("savePdfBtn").addEventListener("click", () => {
     exportReportAsPdf();
   })
 });
+
+
+function saveProjectToDB() {
+  // 1. Read the project name (for later)
+  const projectName = document.getElementById('projectNameInput').value.trim();
+
+  // 2. Grab the drawn polygon (GeoJSON)
+  const feature = draw.getAll().features[0];
+  if (!feature) {
+    alert('Draw a polygon first!');
+    return;
+  }
+  const coords = JSON.stringify(feature.geometry);
+
+  // 3. Read the values displayed in the modal
+  const acres = parseFloat(
+    document.getElementById('area').innerText.replace(/,/g, '')
+  );
+  const annualCO2 = parseFloat(
+    document.getElementById('ton').innerText.replace(/,/g, '')
+  );
+  const roi = parseFloat(
+    document.getElementById('price').innerText.replace(/[^0-9.\-]/g, '')
+  );
+
+  // 4. Build payload (user_id=1 placeholder)
+  const payload = {
+    user_id: 1,
+    coordinates: coords,
+    acres: acres,
+    annual_equivalent_co2: annualCO2,
+    roi_per_year: roi
+    // you could also send projectName here if backend supports it later
+  };
+
+  // 5. POST to your Flask endpoint
+  fetch('/add_project', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert(`Project saved with ID ${data.project_id}`);
+      // Optionally: refresh sidebar, close modal, etc.
+    })
+    .catch(err => {
+      console.error('Save project failed', err);
+      alert('Failed to save project');
+    });
+}
+// Save Project handler
+document.getElementById('saveProjectBtn').addEventListener('click', () => {
+  waitForChartsAndDataToRender(() => {
+    saveProjectToDB();
+  })
+  
+});

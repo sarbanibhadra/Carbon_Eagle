@@ -7,3 +7,4 @@ __pycache__/
 .DS_Store
 app/static/data/AGB/*.png
 app/static/data/AGB/*.nc
+app/.env

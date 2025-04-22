@@ -5,3 +5,7 @@ env_variables:
   FB_MESID: 'G-5T0S3SJY1T'
   MAPBOX_TOKEN: 'pk.eyJ1Ijoiam50dWNjZWxsYSIsImEiOiJja3VyNW84eDIwZzZ3Mm5sbjJ4bmk5ZW5pIn0.pJS-tfqDmr1IfUajBzMggQ'
   
+  DB_USER: 'CarbonEagle'
+  DB_PASS: 'password'
+  DB_NAME: 'project_storage'
+  DB_HOST: 'localhost'

@@ -1,16 +1,20 @@
-from flask import render_template, request, jsonify, redirect, url_for, send_from_directory
-from app import app
-import xarray as xr
 import os
-import pandas as pd           
-from google.cloud import storage
-import datetime
-#import pyrebase
-#from firebase_admin import auth   
-import area 
-import numpy as np  
 import json
 import re
+import datetime
+import xarray as xr
+import pandas as pd
+import numpy as np
+import area
+from flask import (
+    Blueprint, render_template, request, jsonify,
+    redirect, url_for, send_from_directory, current_app
+)
+from google.cloud import storage
+from .extensions import db
+from .db_models import User, Project
+
+bp = Blueprint('main', __name__)
 
  
 config = {
@@ -31,16 +35,16 @@ config = {
 
 
 # Serve static files from the 'static' directory
-@app.route('/<path:filename>')               
+@bp.route('/<path:filename>')               
 def serve_file(filename):
     return send_from_directory('', filename)  
 
 
-@app.route('/')
+@bp.route('/')
 def login():      
     return render_template('login.html')
 
-@app.route('/map', methods = ["POST", 'GET']) 
+@bp.route('/map', methods = ["POST", 'GET']) 
 def map():
     if request.method == 'POST':
         result = request.form           #Get the data
@@ -58,7 +62,7 @@ def map():
     else :
         return redirect(url_for('login'))  
 
-@app.route('/map_agb', methods = ["POST", 'GET'])                                       
+@bp.route('/map_agb', methods = ["POST", 'GET'])                                       
 def map_agb():
     if request.method == 'POST': 
         result = request.form           #Get the data
@@ -81,17 +85,17 @@ def map_agb():
         print(request.headers)    
         return redirect(url_for('login'))   
 
-@app.route('/annual_mean_agb', methods = ["POST", "GET"])
+@bp.route('/annual_mean_agb', methods = ["POST", "GET"])
 def annual_mean_agb(): 
     return render_template('annual_mean_agb.html') 
 
 
-@app.route('/model')        
+@bp.route('/model')        
 def model():
     return render_template('model.html')  
      
 
-@app.route('/mean_agb', methods=['POST'])
+@bp.route('/mean_agb', methods=['POST'])
 def mean_agb():
     poly_data = request.get_json()
     poly_type = poly_data['type']
@@ -135,7 +139,7 @@ def mean_agb():
     return response
 
 
-@app.route('/mean_agb_hr', methods=['POST'])
+@bp.route('/mean_agb_hr', methods=['POST'])
 def mean_agb_hr():
     poly_data = request.get_json()
     poly_type = poly_data['type']                               
@@ -165,7 +169,7 @@ def mean_agb_hr():
     return jsonify(results)
 
 
-@app.route('/mean_agb_vhr', methods=['POST'])
+@bp.route('/mean_agb_vhr', methods=['POST'])
 def mean_agb_vhr():  
     poly_data = request.get_json()
     poly_type = poly_data['type']
@@ -196,7 +200,7 @@ def mean_agb_vhr():
     return jsonify(results)
     
 
-@app.route('/mean_agb_mr', methods=['POST'])
+@bp.route('/mean_agb_mr', methods=['POST'])
 def mean_agb_mr():
     poly_data = request.get_json()
     poly_type = poly_data['type']
@@ -226,7 +230,7 @@ def mean_agb_mr():
     return jsonify(results)                                     
 
 
-@app.route('/investCmap', methods=['POST'])
+@bp.route('/investCmap', methods=['POST'])
 def investCmap():  
     poly_data = request.get_json()
     # poly_type = poly_data['type']
@@ -308,7 +312,7 @@ def investCmap():
     return response
 
 
-@app.route('/ROImap', methods=['POST'])
+@bp.route('/ROImap', methods=['POST'])
 def ROImap():
     print("Inside ROIMap")
     poly_data = request.get_json()
@@ -387,7 +391,7 @@ def ROImap():
     # Return the JSON response
     return response
 
-@app.route('/roi', methods=['POST'])   
+@bp.route('/roi', methods=['POST'])   
 def roi():
     print("Inside  roi")
     
@@ -592,7 +596,7 @@ def roi():
             print("finish roi")
     return results
 
-@app.route('/polygon_exposure', methods=['POST'])        
+@bp.route('/polygon_exposure', methods=['POST'])        
 def compute_human_exposure():
     poly_data = request.get_json()             
     poly_type = poly_data['type']
@@ -606,7 +610,7 @@ def compute_human_exposure():
     results = {'percent_good' : percent_good, 'percent_moderate' : percent_moderate, 'percent_poor' : percent_poor, 'percent_very_poor' : percent_very_poor, 'percent_severe' : percent_severe}
     return jsonify(results)
 
-@app.route('/agb_polygon_exposure', methods=['GET', 'POST'])
+@bp.route('/agb_polygon_exposure', methods=['GET', 'POST'])
 def agb_polygon_exposure():  
     print("Inside routes/agb_polygon_exposure ")    
     poly_data = request.get_json()
@@ -638,7 +642,51 @@ def agb_polygon_exposure():
     print("response ")
     #results = {'year': df_annual_mean.year.to_list(), 'annual_mean' : df_annual_mean.PredNO2.to_list()}
     return response
-                                    
+
+# DATABASE ROUTES
+@bp.route('/add_user', methods=['POST'])
+def add_user():
+    data = request.json
+    new_user = User(name=data['name'])
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify({'user_id': new_user.user_id})
+
+@bp.route('/add_project', methods=['POST'])
+def add_project():
+    data = request.json
+    new_project = Project(
+        user_id=data['user_id'],
+        coordinates=data['coordinates'],
+        acres=data['acres'],
+        annual_equivalent_co2=data['annual_equivalent_co2'],
+        roi_per_year=data['roi_per_year']
+    )
+    db.session.add(new_project)
+    db.session.commit()
+    return jsonify({'project_id': new_project.project_id})
+
+@bp.route('/projects/<int:user_id>', methods=['GET'])
+def get_projects_by_user(user_id):
+
+    projects = Project.query.filter_by(user_id=user_id).all()
+
+    if not projects:
+        return jsonify({'message': f'No projects found for user_id={user_id}'}), 404
+
+    return jsonify([
+        {
+            'project_id': p.project_id,
+            'user_id': p.user_id,
+            'coordinates': p.coordinates,
+            'acres': p.acres,
+            'annual_equivalent_co2': p.annual_equivalent_co2,
+            'roi_per_year': p.roi_per_year
+        }
+        for p in projects
+    ])
+
+                                  
 def compute_mean_agb(poly_type, poly_coor): 
     print("inside compute_mean_agb")
     print(request.method)
@@ -679,7 +727,7 @@ def compute_mean_agb(poly_type, poly_coor):
     print(results)    
     return results
 
-@app.route('/point_exposure', methods=['POST'])
+@bp.route('/point_exposure', methods=['POST'])
 def compute_point_exposure():
     point_data = request.get_json()
     print("point_data")
@@ -700,7 +748,7 @@ def compute_point_exposure():
     results = {'year': df_annual_mean.year.to_list(), 'annual_mean' : df_annual_mean.PredNO2.to_list(), 'day' : df_daily.time.to_list(), 'daily_concentration' : df_daily.PredNO2.to_list(), 'percentage_exposure' : percentage_exposure}
     return jsonify(results)   
 
-@app.route('/gc_url', methods=['POST'])
+@bp.route('/gc_url', methods=['POST'])
 def get_image_url():
     date = request.get_json()
     year = date[:4]
@@ -715,7 +763,7 @@ def get_image_url():
     result = {'FR' : url}
     return jsonify(result)
                   
-@app.route('/agb_url', methods=['POST'])                 
+@bp.route('/agb_url', methods=['POST'])                 
 def get_agbimage_url():   
     print("Inside agb_url ")
     data = request.get_json()   
