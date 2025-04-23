@@ -1,6 +1,6 @@
-from app import app
-from flask import Flask, jsonify, render_template, request
+from app import create_app
 
+app = create_app()
 
-from flask_cors import CORS
-CORS(app)
+if __name__ == '__main__':
+    app.run(debug=True)

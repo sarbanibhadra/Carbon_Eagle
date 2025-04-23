@@ -104,6 +104,7 @@ function updateArea(e) {
     dataType: 'json',
     success: function(result) {
     //updateExposureChart(result)
+        // window.latestCarbonData = result; // Store the results of the calculation for csv/pdf download
         console.log(result)
         //updatePointChart(result)
         //openPopupWithContent(result);
@@ -125,6 +126,7 @@ function add_marker(event) {
     contentType: "application/json",
     dataType: 'json',
     success: function(result) {
+      window.latestCarbonData = result; // Store the results of the calculation for csv/pdf download
       updatePointChart(result)
     } 
   });
@@ -193,6 +195,7 @@ function createCarbonBarChart() {
     dataType: 'json',
     success: function(result) {
     //updateExposureChart(result)
+      window.latestCarbonData = result; // Store the results of the calculation for csv/pdf download
       updatePointChart(result)
     },
     error: function(xhr, status, error) {
@@ -222,3 +225,139 @@ document.getElementById('calculateButton').onclick = function(e) {
             $('#barModal').modal('show');
         }, 8000); // Adjust the delay as needed (2000ms = 2 seconds)
 }
+
+
+function waitForChartsAndDataToRender(callback) {
+  const chart1 = document.getElementById("chart_annual_mean");
+  const chart2 = document.getElementById("chart_ROI_NPV_USDperYear");
+  const areaField = document.getElementById("area");
+  const tonField = document.getElementById("ton");
+  const priceField = document.getElementById("price");
+
+  const check = setInterval(() => {
+    if (chart1 && chart1.childElementCount > 0 &&
+        chart2 && chart2.childElementCount > 0 &&
+        areaField && areaField.textContent.trim() !== "" &&
+        tonField && tonField.textContent.trim() !== "" &&
+        priceField && priceField.textContent.trim() !== "") {
+      clearInterval(check);
+      callback();
+    }
+  }, 300);
+}
+
+function insertMapScreenshotInModalMap() {
+  // Verify that the map object exists
+  if (typeof map !== 'undefined') {
+    // Get the Mapbox canvas element
+    const canvas = map.getCanvas();
+    // Generate an image data URL from the canvas
+    const imgData = canvas.toDataURL("image/png");
+    // Get the container that holds the interactive map
+    const modalMap = document.getElementById("modalMap");
+    // Create an image element with the screenshot
+    const img = document.createElement("img");
+    img.src = imgData;
+
+    img.style.width = "100%";
+    img.style.height = "auto";
+    // Replace the interactive map content with the static screenshot image
+    modalMap.innerHTML = "";
+    modalMap.appendChild(img);
+  } else {
+    console.error("Map object is not defined.");
+  }
+}
+
+function exportReportAsPdf() {
+  const element = document.getElementById("RevenueReport");
+  
+  // Replace the interactive map with a screenshot image
+  insertMapScreenshotInModalMap();
+  
+  // Use html2canvas to capture the updated RevenueReport including the map screenshot
+  html2canvas(element, {
+    scale: 2,
+    useCORS: true,
+    scrollY: 0
+  })
+  .then(canvas => {
+    const imgData = canvas.toDataURL("image/jpeg", 1.0);
+    
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("portrait", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const scaleFactor = pdfWidth / canvas.width;
+    const pdfHeight = canvas.height * scaleFactor;
+    
+    pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+
+  })
+  .catch(error => {
+    console.error("Error generating PDF:", error);
+  });
+}
+
+document.getElementById("savePdfBtn").addEventListener("click", () => {
+  waitForChartsAndDataToRender(() => {
+    exportReportAsPdf();
+  })
+});
+
+
+function saveProjectToDB() {
+  // 1. Read the project name (for later)
+  const projectName = document.getElementById('projectNameInput').value.trim();
+
+  // 2. Grab the drawn polygon (GeoJSON)
+  const feature = draw.getAll().features[0];
+  if (!feature) {
+    alert('Draw a polygon first!');
+    return;
+  }
+  const coords = JSON.stringify(feature.geometry);
+
+  // 3. Read the values displayed in the modal
+  const acres = parseFloat(
+    document.getElementById('area').innerText.replace(/,/g, '')
+  );
+  const annualCO2 = parseFloat(
+    document.getElementById('ton').innerText.replace(/,/g, '')
+  );
+  const roi = parseFloat(
+    document.getElementById('price').innerText.replace(/[^0-9.\-]/g, '')
+  );
+
+  // 4. Build payload (user_id=1 placeholder)
+  const payload = {
+    user_id: 1,
+    coordinates: coords,
+    acres: acres,
+    annual_equivalent_co2: annualCO2,
+    roi_per_year: roi
+    // you could also send projectName here if backend supports it later
+  };
+
+  // 5. POST to your Flask endpoint
+  fetch('/add_project', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert(`Project saved with ID ${data.project_id}`);
+      // Optionally: refresh sidebar, close modal, etc.
+    })
+    .catch(err => {
+      console.error('Save project failed', err);
+      alert('Failed to save project');
+    });
+}
+// Save Project handler
+document.getElementById('saveProjectBtn').addEventListener('click', () => {
+  waitForChartsAndDataToRender(() => {
+    saveProjectToDB();
+  })
+  
+});

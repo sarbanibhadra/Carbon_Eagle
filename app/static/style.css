@@ -175,4 +175,37 @@ body,
   height: 30px;
 }
 
+#RevenueReport {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  font-size: 14px;
+  transform-origin: top left;
+  background-color: white;
+  padding: 20px;
+  box-sizing: border-box;
+}
 
+
+#RevenueReport .row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#RevenueReport .col-md-6 {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+#RevenueReport canvas {
+  max-width: 100% !important;
+  height: auto !important;
+}
+/* 
+#chart_annual_mean,
+#chart_ROI_NPV_USDperYear {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+} */

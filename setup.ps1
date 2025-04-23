@@ -1,0 +1,5 @@
+$env:MAPBOX_TOKEN = "pk.eyJ1Ijoiam50dWNjZWxsYSIsImEiOiJja3VyNW84eDIwZzZ3Mm5sbjJ4bmk5ZW5pIn0.pJS-tfqDmr1IfUajBzMggQ"
+$env:FB_APIKEY     = "AIzaSyAjEAy3Ycz2ZRm7HH-jCuw1DjNvTNQN64Y"
+$env:FB_APPID      = "1:720058971982:web:14da9c89c5b32aceb2501f"
+$env:FB_MESID      = "G-5T0S3SJY1T"
+$env:FB_MESS       = "720058971982"

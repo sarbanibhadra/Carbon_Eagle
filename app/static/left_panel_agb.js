@@ -206,6 +206,87 @@ const riskButton = createButton(
     "#8B0000"   // Dark red icon color on hover
 );
 
+const topControls = document.createElement('div');
+topControls.style.display = 'flex';
+topControls.style.flexDirection = 'column';
+topControls.style.alignItems = 'center';
+topControls.style.width = '100%';
+
+// Append logo and main buttons into topControls
+topControls.appendChild(logo);
+topControls.appendChild(dollarButton);
+topControls.appendChild(riskButton);
+
+// Clear any existing children and re‑append topControls first
+leftPanel.innerHTML = '';
+leftPanel.appendChild(topControls);
+
+// 2. Create the projects section as a grey box
+const projectSection = document.createElement('div');
+projectSection.style.width = '100%';
+projectSection.style.marginTop = '20px';
+projectSection.style.backgroundColor = '#f0f0f0';
+projectSection.style.padding = '10px';
+projectSection.style.borderRadius = '4px';
+projectSection.style.overflowY = 'auto';
+// Reserve space under topControls (adjust 200px if topControls grows)
+projectSection.style.maxHeight = 'calc(100vh - 200px)';
+
+// Header
+const projectHeader = document.createElement('h5');
+projectHeader.textContent = 'Your Projects';
+projectHeader.style.margin = '0 0 10px';
+projectHeader.style.fontSize = '16px';
+projectHeader.style.textAlign = 'center';
+projectSection.appendChild(projectHeader);
+
+// List container
+const projectList = document.createElement('div');
+projectList.id = 'projectList';
+projectList.style.display = 'flex';
+projectList.style.flexDirection = 'column';
+projectList.style.gap = '10px';
+projectSection.appendChild(projectList);
+
+
+
+// 3. Fetch projects and render as dark grey buttons
+fetch('/projects/1')
+  .then(res => {
+    if (!res.ok) throw new Error('Failed to fetch projects');
+    return res.json();
+  })
+  .then(projects => {
+    const list = document.getElementById('projectList');
+    list.innerHTML = '';
+    projects.forEach(p => {
+      const btn = document.createElement('button');
+      btn.textContent = `Project #${p.project_id}`;
+      btn.style.backgroundColor = '#6c757d';   // dark grey
+      btn.style.color = '#fff';
+      btn.style.border = 'none';
+      btn.style.width = '100%';
+      btn.style.borderRadius = '4px';
+      btn.style.padding = '8px';
+      btn.style.textAlign = 'left';
+      btn.style.cursor = 'pointer';
+
+      btn.addEventListener('mouseover', () => btn.style.backgroundColor = '#5a6268');
+      btn.addEventListener('mouseout',  () => btn.style.backgroundColor = '#6c757d');
+      btn.addEventListener('click',    () => {
+        alert(`Selected Project ${p.project_id}`);
+        // TODO: load project details or zoom map
+      });
+
+      list.appendChild(btn);
+    });
+  })
+  .catch(err => {
+    console.error(err);
+    projectList.innerHTML = '<div class="text-danger">Unable to load projects.</div>';
+  });
+
+
 
 dollarButton.addEventListener("click", () => {
   const draw_data = draw.getAll().features[0];
@@ -223,6 +304,6 @@ dollarButton.addEventListener("click", () => {
 leftPanel.appendChild(logo);
 leftPanel.appendChild(dollarButton);
 leftPanel.appendChild(riskButton);
-
+leftPanel.appendChild(projectSection);
 // Append the left panel to the body
 document.body.appendChild(leftPanel);
