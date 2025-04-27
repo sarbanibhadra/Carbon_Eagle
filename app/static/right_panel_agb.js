@@ -193,7 +193,8 @@ function showPolyMap(polygonCoordinates) {
       container: 'modalMap',
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [polygonCoordinates[0][0][0], polygonCoordinates[0][0][1]], // Center the map initially
-      zoom: 7 // Adjust zoom level
+      zoom: 7, // Adjust zoom level
+      preserveDrawingBuffer: true
   });
 
   // Add the polygon to the modal map

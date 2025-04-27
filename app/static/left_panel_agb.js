@@ -249,43 +249,129 @@ projectList.style.gap = '10px';
 projectSection.appendChild(projectList);
 
 
+async function deleteProjectAndRefresh(userId, projectId) {
+  const resp = await fetch('/delete_project', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id: userId, project_id: projectId })
+  });
+  if (!resp.ok) throw new Error('delete failed');
 
-// 3. Fetch projects and render as dark grey buttons
-fetch('/projects/1')
-  .then(res => {
-    if (!res.ok) throw new Error('Failed to fetch projects');
-    return res.json();
-  })
-  .then(projects => {
-    const list = document.getElementById('projectList');
-    list.innerHTML = '';
-    projects.forEach(p => {
-      const btn = document.createElement('button');
-      btn.textContent = `Project #${p.project_id}`;
-      btn.style.backgroundColor = '#6c757d';   // dark grey
-      btn.style.color = '#fff';
-      btn.style.border = 'none';
-      btn.style.width = '100%';
-      btn.style.borderRadius = '4px';
-      btn.style.padding = '8px';
-      btn.style.textAlign = 'left';
-      btn.style.cursor = 'pointer';
+  await refreshSidebar();
+  await refreshMapProjects();
 
-      btn.addEventListener('mouseover', () => btn.style.backgroundColor = '#5a6268');
-      btn.addEventListener('mouseout',  () => btn.style.backgroundColor = '#6c757d');
-      btn.addEventListener('click',    () => {
-        alert(`Selected Project ${p.project_id}`);
-        // TODO: load project details or zoom map
+  // ensure drawn polygon is removed if no projects remain
+  const remaining = (await fetch('/projects/1').then(r=>r.json())).length;
+  if (remaining === 0) {
+    draw.deleteAll();
+    updateArea();
+  }
+}
+
+
+
+function refreshSidebar() {
+  const list = document.getElementById('projectList');
+  return fetch('/projects/1')
+    .then(r => {
+      if (r.status === 404) return [];
+      if (!r.ok) return Promise.reject(r.status);
+      return r.json();
+    })
+    .then(projects => {
+      list.innerHTML = '';
+      projects.forEach(p => {
+        const row = document.createElement('div');
+        Object.assign(row.style, {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '4px'
+        });
+
+        const btn = document.createElement('button');
+        btn.textContent = p.project_name;
+        Object.assign(btn.style, {
+          backgroundColor: '#6c757d',
+          color: '#fff',
+          border: 'none',
+          flexGrow: '1',
+          borderRadius: '4px',
+          padding: '8px',
+          textAlign: 'left',
+          cursor: 'pointer'
+        });
+
+        btn.addEventListener('mouseover', () => btn.style.backgroundColor = '#5a6268');
+        btn.addEventListener('mouseout',  () => btn.style.backgroundColor = '#6c757d');
+        btn.addEventListener('click',   () => showReportModal(p));
+
+        const del = document.createElement('span');
+        del.textContent = '×';
+        Object.assign(del.style, { color:'#c00', cursor:'pointer', marginLeft:'8px', fontSize:'20px' });
+        del.addEventListener('click', e => {
+          e.stopPropagation();
+          if (!confirm(`Delete "${p.project_name}"?`)) return;
+          deleteProjectAndRefresh(1, p.project_id);
+        });
+
+        row.append(btn, del);
+        list.appendChild(row);
       });
-
-      list.appendChild(btn);
+      return projects;
+    })
+    .catch(_ => {
+      list.innerHTML = '';
+      return [];
     });
-  })
-  .catch(err => {
-    console.error(err);
-    projectList.innerHTML = '<div class="text-danger">Unable to load projects.</div>';
+}
+
+function showReportModal(p) {
+  const report = JSON.parse(p.report_data);
+
+  document.getElementById('projectNameInput').value = p.project_name;
+  document.getElementById('area').innerText  = `${report.summary.acres.toLocaleString()} ha`;
+  document.getElementById('ton').innerText   = `${report.summary.co2.toLocaleString()} tCO₂e / yr`;
+  document.getElementById('price').innerText = `$${report.summary.roi.toLocaleString()} / yr`;
+
+  const a = report.assumptions;
+  document.getElementById('projectDurationOp').innerText    = `Duration (yrs): ${a.project_duration}`;
+  document.getElementById('developmentCostOp').innerText    = `Est. Cost ($/ha): ${a.development_cost}`;
+  document.getElementById('maintenanceCostOp').innerText    = `Maint. Cost ($/ha): ${a.maintenance_cost}`;
+  document.getElementById('carbonPriceOp').innerText        = `Start Price ($/t): ${a.carbon_price}`;
+  document.getElementById('annualAppreciationOp').innerText = `Price Apprec. ($/t): ${a.annual_appreciation}`;
+  document.getElementById('discountRateOp').innerText       = `Discount Rate (%): ${a.discount_rate}`;
+  document.getElementById('analysis').innerText             = report.analysis;
+
+  chart_annual_mean.load({
+    columns: [
+      ['x'].concat(report.charts.agb.x),
+      ['data'].concat(report.charts.agb.values)
+    ]
+  });
+  chart_annual_carbon.load({
+    columns: [
+      ['x'].concat(report.charts.carbon.x),
+      ['data'].concat(report.charts.carbon.values)
+    ]
+  });
+  chart_ROI_NPV_USDperYear.load({
+    columns: [
+      ['x'].concat(report.charts.npv.x),
+      ['data'].concat(report.charts.npv.values)
+    ]
   });
 
+  const geom = JSON.parse(p.coordinates);
+  showPolyMap(geom.coordinates);
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('barModal')).show();
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  refreshSidebar();
+  refreshMapProjects();
+});
 
 
 dollarButton.addEventListener("click", () => {

@@ -9,9 +9,11 @@ class User(db.Model):
 class Project(db.Model):
     __tablename__ = 'projects'
     project_id = db.Column(db.Integer, primary_key=True)
+    project_name = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     coordinates = db.Column(db.Text, nullable=False)
     acres = db.Column(db.Float, nullable=False)
     annual_equivalent_co2 = db.Column(db.Float, nullable=False)
     roi_per_year = db.Column(db.Float, nullable=False)
-    # Add more fields as needed
+    report_data = db.Column(db.Text, nullable=False)
+

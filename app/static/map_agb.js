@@ -604,7 +604,166 @@ const updateDataLayer = (date, type) => {
     map.removeSource('AGB_Amazon_Basin');
     addDataLayer(date, type);
   };
+  
 
-map.on('load', () => {
-  buildLegend();
-  });  
+  function refreshMapProjects() {
+    return fetch('/projects/1')
+      .then(r => {
+        if (r.status === 404) return [];
+        if (!r.ok) return Promise.reject(r.status);
+        return r.json();
+      })
+      .then(projects => {
+        const features = projects.map(p => ({
+          type: 'Feature',
+          geometry: JSON.parse(p.coordinates),
+          properties: p
+        }));
+        const fc = { type: 'FeatureCollection', features };
+  
+        // update or add the userProjects source
+        if (map.getSource('userProjects')) {
+          map.getSource('userProjects').setData(fc);
+        } else {
+          map.addSource('userProjects', { type: 'geojson', data: fc });
+        }
+  
+        ['userProjects-fill','userProjects-border'].forEach(id => {
+          if (map.getLayer(id)) map.removeLayer(id);
+        });
+  
+        // now add them using the same style as your hard-coded polygons:
+        map.addLayer({
+          id: 'userProjects-fill',
+          type: 'fill',
+          source: 'userProjects',
+          paint: {
+            'fill-color': '#00FF00',
+            'fill-opacity': 0.5
+          }
+        });
+        map.addLayer({
+          id: 'userProjects-border',
+          type: 'line',
+          source: 'userProjects',
+          paint: {
+            'line-color': '#000000',
+            'line-width': 2,
+            'line-dasharray': [2,2]
+          }
+        });
+
+        const verts = {
+            type: 'FeatureCollection',
+            features: features.flatMap(feat => {
+              // assume simple polygons: use first ring
+              return feat.geometry.coordinates[0].map(coord => ({
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: coord },
+                properties: {}  // no extra props needed
+              }));
+            })
+          };
+    
+          if (map.getSource('userProjectVerts')) {
+            map.getSource('userProjectVerts').setData(verts);
+          } else {
+            map.addSource('userProjectVerts',{ type:'geojson', data:verts });
+          }
+    
+          if (map.getLayer('userProjectVerts-circle')) {
+            map.removeLayer('userProjectVerts-circle');
+          }
+    
+          // draw blue circles at each vertex
+          map.addLayer({
+            id: 'userProjectVerts-circle',
+            type: 'circle',
+            source: 'userProjectVerts',
+            paint: {
+              'circle-radius': 4,       // adjust size to match red ones
+              'circle-color': '#0000ff' // blue
+            }
+          });
+  
+        // re-bind click → same popup as static
+        map.off('click','userProjects-fill');
+        map.on('click','userProjects-fill', e => {
+          const props = e.features[0].properties;
+          console.log(props);
+          const coord = e.lngLat;
+          const html =
+            `<strong>Project Name:</strong> ${props.project_name}<br>`+
+            `<strong>Area:</strong> ${(props.acres * 0.404686).toLocaleString(undefined, {maximumFractionDigits:2})} Hectares<br>`+
+            `<strong>Estimated Annual Emission Reductions:</strong> ${props.annual_equivalent_co2.toLocaleString()}<br>`+
+            `<strong>Estimated ROI Per Annum:</strong> ${props.roi_per_year.toLocaleString()}<br>`
+          new mapboxgl.Popup()
+            .setLngLat(coord)
+            .setHTML(html)
+            .addTo(map);
+        });
+  
+        // if none remain, clear Draw
+        if (features.length === 0) {
+          draw.deleteAll();
+          updateArea();
+        }
+  
+        return projects;
+      })
+      .catch(err => {
+        console.error('refreshMapProjects error', err);
+        if (map.getSource('userProjects')) {
+          map.getSource('userProjects').setData({ type:'FeatureCollection', features:[] });
+        }
+        draw.deleteAll();
+        updateArea();
+        return [];
+      });
+  }
+  
+  
+    
+  map.on('load', () => {
+    refreshSidebar();
+    refreshMapProjects();
+  });
+  
+  
+
+  
+// clear propModal inputs when hidden
+document.getElementById('propModal')
+  .addEventListener('hidden.bs.modal', () => {
+    ['projectNameInput','projectDuration','developmentCost',
+     'maintenanceCost','carbonPrice','annualAppreciation',
+     'discountRate'].forEach(id=>{
+       const el = document.getElementById(id);
+       if (el.tagName === 'INPUT') el.value = '';
+    });
+  });
+
+
+  const barModalEl = document.getElementById('barModal');
+
+  barModalEl.addEventListener('hidden.bs.modal', () => {
+    // 1) Clear just the text/stat fields:
+    ['area','ton','price',
+     'projectDurationOp','developmentCostOp','maintenanceCostOp',
+     'carbonPriceOp','annualAppreciationOp','discountRateOp','analysis']
+      .forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = '';
+      });
+  
+    // 2) Unload C3 data (leaves the <div id="chart_…"> in the DOM):
+    if (window.chartAnnual) window.chartAnnual.unload();
+    if (window.chartNPV)    window.chartNPV.unload();
+  
+    // 3) Tear down the Mapbox mini‐map, but leave its <div id="modalMap">:
+    if (window.modalMapInstance) {
+      window.modalMapInstance.remove();
+      window.modalMapInstance = null;
+    }
+  });
+  
