@@ -57,10 +57,10 @@ def map():
             return render_template('map.html')
         except:
                 #If there is any error, redirect back to login
-            #return redirect(url_for('login'))
+            #return redirect(url_for("main.login"))
             return render_template('map.html')
     else :
-        return redirect(url_for('login'))  
+        return redirect(url_for("main.login"))  
 
 @bp.route('/map_agb', methods = ["POST", 'GET'])                                       
 def map_agb():
@@ -77,13 +77,13 @@ def map_agb():
             return render_template('map_agb.html')     
         except:
                 #If there is any error, redirect back to login
-            #return redirect(url_for('login'))      
+            #return redirect(url_for("main.login"))      
             return render_template('map_agb.html') 
     else :
         print("checking request body")
         print(request.method)
         print(request.headers)    
-        return redirect(url_for('login'))   
+        return redirect(url_for("main.login"))   
 
 @bp.route('/annual_mean_agb', methods = ["POST", "GET"])
 def annual_mean_agb(): 
@@ -654,37 +654,63 @@ def add_user():
 
 @bp.route('/add_project', methods=['POST'])
 def add_project():
-    data = request.json
+    data = request.get_json() or {}
+
     new_project = Project(
-        user_id=data['user_id'],
-        coordinates=data['coordinates'],
-        acres=data['acres'],
-        annual_equivalent_co2=data['annual_equivalent_co2'],
-        roi_per_year=data['roi_per_year']
+        user_id                 = data.get('user_id'),
+        project_name            = data.get('project_name'),
+        coordinates             = data.get('coordinates'),
+        acres                   = data.get('acres'),
+        annual_equivalent_co2   = data.get('annual_equivalent_co2'),
+        roi_per_year            = data.get('roi_per_year'),
+        report_data = data.get('report_data')
     )
+
     db.session.add(new_project)
     db.session.commit()
+
     return jsonify({'project_id': new_project.project_id})
+
+
+
+@bp.route('/delete_project', methods=['POST'])
+def delete_project():
+    data = request.json
+    user_id = data.get('user_id')
+    project_id = data.get('project_id')
+
+    # Validate inputs
+    if user_id is None or project_id is None:
+        return jsonify({'error': 'user_id and project_id are required'}), 400
+
+    # Find the project belonging to the user
+    project = Project.query.filter_by(user_id=user_id, project_id=project_id).first()
+
+    if not project:
+        return jsonify({'error': f'No project found for user_id={user_id} and project_id={project_id}'}), 404
+
+    db.session.delete(project)
+    db.session.commit()
+
+    return jsonify({'message': f'Project {project_id} deleted successfully'})
 
 @bp.route('/projects/<int:user_id>', methods=['GET'])
 def get_projects_by_user(user_id):
+    projs = Project.query.filter_by(user_id=user_id).all()
+    if not projs:
+        return jsonify([]), 404
 
-    projects = Project.query.filter_by(user_id=user_id).all()
+    return jsonify([{
+        'project_id': p.project_id,
+        'project_name': p.project_name,
+        'coordinates': p.coordinates,
+        'acres': p.acres,
+        'annual_equivalent_co2': p.annual_equivalent_co2,
+        'roi_per_year': p.roi_per_year,
+        'report_data': p.report_data   # ← the entire JSON blob
+    } for p in projs])
 
-    if not projects:
-        return jsonify({'message': f'No projects found for user_id={user_id}'}), 404
 
-    return jsonify([
-        {
-            'project_id': p.project_id,
-            'user_id': p.user_id,
-            'coordinates': p.coordinates,
-            'acres': p.acres,
-            'annual_equivalent_co2': p.annual_equivalent_co2,
-            'roi_per_year': p.roi_per_year
-        }
-        for p in projects
-    ])
 
                                   
 def compute_mean_agb(poly_type, poly_coor): 

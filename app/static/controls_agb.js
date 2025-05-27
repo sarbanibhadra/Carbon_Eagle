@@ -209,7 +209,7 @@ function createCarbonBarChart() {
 // Trigger the modal display process
 document.getElementById('calculateButton').onclick = function(e) {
         e.preventDefault();
-        // modalprop.style.display = "none";
+        modalprop.style.display = "none";
         $('#propModal').modal('hide');
         // Performing calculations
         createCarbonBarChart();
@@ -228,136 +228,203 @@ document.getElementById('calculateButton').onclick = function(e) {
 
 
 function waitForChartsAndDataToRender(callback) {
-  const chart1 = document.getElementById("chart_annual_mean");
-  const chart2 = document.getElementById("chart_ROI_NPV_USDperYear");
-  const areaField = document.getElementById("area");
-  const tonField = document.getElementById("ton");
-  const priceField = document.getElementById("price");
+  return new Promise(resolve => {
+    const chart1 = document.getElementById("chart_annual_mean");
+    const chart2 = document.getElementById("chart_ROI_NPV_USDperYear");
+    const areaField = document.getElementById("area");
+    const tonField = document.getElementById("ton");
+    const priceField = document.getElementById("price");
 
-  const check = setInterval(() => {
-    if (chart1 && chart1.childElementCount > 0 &&
+    const check = setInterval(() => {
+      if (
+        chart1 && chart1.childElementCount > 0 &&
         chart2 && chart2.childElementCount > 0 &&
         areaField && areaField.textContent.trim() !== "" &&
         tonField && tonField.textContent.trim() !== "" &&
-        priceField && priceField.textContent.trim() !== "") {
-      clearInterval(check);
-      callback();
-    }
-  }, 300);
+        priceField && priceField.textContent.trim() !== ""
+      ) {
+        clearInterval(check);
+
+        // invoke callback and if it returns a promise, wait on it
+        const result = callback();
+        if (result && typeof result.then === "function") {
+          result.then(resolve);
+        } else {
+          resolve(result);
+        }
+      }
+    }, 300);
+  });
 }
 
-function insertMapScreenshotInModalMap() {
-  // Verify that the map object exists
-  if (typeof map !== 'undefined') {
-    // Get the Mapbox canvas element
-    const canvas = map.getCanvas();
-    // Generate an image data URL from the canvas
-    const imgData = canvas.toDataURL("image/png");
-    // Get the container that holds the interactive map
-    const modalMap = document.getElementById("modalMap");
-    // Create an image element with the screenshot
-    const img = document.createElement("img");
-    img.src = imgData;
 
-    img.style.width = "100%";
-    img.style.height = "auto";
-    // Replace the interactive map content with the static screenshot image
-    modalMap.innerHTML = "";
-    modalMap.appendChild(img);
-  } else {
-    console.error("Map object is not defined.");
-  }
+function insertMapScreenshotInModalMap() {
+  const modalMap = document.getElementById("modalMap");
+  // 1) remove every child (including the WebGL <canvas>)
+  while (modalMap.firstChild) modalMap.removeChild(modalMap.firstChild);
+
+  // 2) draw the screenshot image
+  const imgData = map.getCanvas().toDataURL("image/png");
+  const img = new Image();
+  img.src = imgData;
+  img.style.width  = "100%";
+  img.style.height = "auto";
+  modalMap.appendChild(img);
 }
 
 function exportReportAsPdf() {
   const element = document.getElementById("RevenueReport");
-  
-  // Replace the interactive map with a screenshot image
   insertMapScreenshotInModalMap();
-  
-  // Use html2canvas to capture the updated RevenueReport including the map screenshot
+  const rawName = document.getElementById('projectNameInput').value.trim() || 'Report';
+  const safeName = rawName.replace(/\s+/g,'_').replace(/[^\w\-]/g,'');
   html2canvas(element, {
-    scale: 2,
-    useCORS: true,
-    scrollY: 0
+    scale:    2,
+    useCORS:  true,
+    scrollY:  0,
+    ignoreElements: el => el.tagName.toLowerCase() === "canvas"
   })
   .then(canvas => {
     const imgData = canvas.toDataURL("image/jpeg", 1.0);
-    
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF("portrait", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const scaleFactor = pdfWidth / canvas.width;
     const pdfHeight = canvas.height * scaleFactor;
-    
     pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
-
+    pdf.save(`${safeName}_Revenue_Report.pdf`);
   })
-  .catch(error => {
-    console.error("Error generating PDF:", error);
-  });
+  .catch(err => console.error("Error generating PDF:", err));
 }
 
 document.getElementById("savePdfBtn").addEventListener("click", () => {
-  waitForChartsAndDataToRender(() => {
-    exportReportAsPdf();
-  })
+  waitForChartsAndDataToRender(exportReportAsPdf);
 });
 
+function closePropModal() {
+  const el = document.getElementById('propModal');
+  bootstrap.Modal.getOrCreateInstance(el).hide();
+}
+function closeBarModal() {
+  const el = document.getElementById('barModal');
+  bootstrap.Modal.getOrCreateInstance(el).hide();
+}
 
 function saveProjectToDB() {
-  // 1. Read the project name (for later)
+  // 1) basic checks
   const projectName = document.getElementById('projectNameInput').value.trim();
-
-  // 2. Grab the drawn polygon (GeoJSON)
+  if (!projectName) {
+    alert('Project name is required!');
+    return;
+  }
   const feature = draw.getAll().features[0];
   if (!feature) {
     alert('Draw a polygon first!');
     return;
   }
-  const coords = JSON.stringify(feature.geometry);
 
-  // 3. Read the values displayed in the modal
-  const acres = parseFloat(
-    document.getElementById('area').innerText.replace(/,/g, '')
-  );
-  const annualCO2 = parseFloat(
-    document.getElementById('ton').innerText.replace(/,/g, '')
-  );
-  const roi = parseFloat(
-    document.getElementById('price').innerText.replace(/[^0-9.\-]/g, '')
-  );
+  // 2) read summary fields
+  const acres                = parseFloat(document.getElementById('area').innerText.replace(/[^0-9.\-]/g, '')) || 0;
+  const annual_co2           = parseFloat(document.getElementById('ton').innerText.replace(/[^0-9.\-]/g, '')) || 0;
+  const roi_per_year         = parseFloat(document.getElementById('price').innerText.replace(/[^0-9.\-]/g, ''))    || 0;
 
-  // 4. Build payload (user_id=1 placeholder)
-  const payload = {
-    user_id: 1,
-    coordinates: coords,
-    acres: acres,
-    annual_equivalent_co2: annualCO2,
-    roi_per_year: roi
-    // you could also send projectName here if backend supports it later
+  // 3) read assumptions inputs
+  const project_duration     = parseFloat(document.getElementById('projectDuration').value)    || 0;
+  const development_cost     = parseFloat(document.getElementById('developmentCost').value)    || 0;
+  const maintenance_cost     = parseFloat(document.getElementById('maintenanceCost').value)    || 0;
+  const carbon_price         = parseFloat(document.getElementById('carbonPrice').value)        || 0;
+  const annual_appreciation  = parseFloat(document.getElementById('annualAppreciation').value) || 0;
+  const discount_rate        = parseFloat(document.getElementById('discountRate').value)       || 0;
+
+  // 4) read analysis text
+  const analysis_summary     = document.getElementById('analysis').innerText.trim();
+
+  // 5) extract chart data from C3 instances
+  function extractChartData(chart) {
+    // returns [ [ 'x', ...years ], [ 'data', ...values ] ]
+    const datasets = chart.data();
+    // assume first dataset is x/data
+    const series = datasets[0];
+    const xcol = ['x'].concat(series.values.map(pt => pt.x));
+    const ycol = [series.id].concat(series.values.map(pt => pt.value));
+    return { x: xcol.slice(1), values: ycol.slice(1) };
+  }
+  const agbData    = extractChartData(chart_annual_mean);
+  const carbonData = extractChartData(chart_annual_carbon);
+  const npvData    = extractChartData(chart_ROI_NPV_USDperYear);
+
+  // 6) build the single report_data object
+  const report = {
+    geometry: feature.geometry,
+    summary: {
+      acres: acres,
+      co2: annual_co2,
+      roi: roi_per_year
+    },
+    assumptions: {
+      project_duration,
+      development_cost,
+      maintenance_cost,
+      carbon_price,
+      annual_appreciation,
+      discount_rate
+    },
+    analysis: analysis_summary,
+    charts: {
+      agb:    { x: agbData.x,    values: agbData.values },
+      carbon: { x: carbonData.x, values: carbonData.values },
+      npv:    { x: npvData.x,    values: npvData.values }
+    }
   };
 
-  // 5. POST to your Flask endpoint
+  // 7) assemble full payload
+  const payload = {
+    user_id: 1,
+    project_name: projectName,
+    coordinates: JSON.stringify(feature.geometry),
+    acres: acres,
+    annual_equivalent_co2: annual_co2,
+    roi_per_year: roi_per_year,
+    report_data: JSON.stringify(report)
+  };
+
+  // 8) send to server
   fetch('/add_project', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   })
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
     .then(data => {
-      alert(`Project saved with ID ${data.project_id}`);
-      // Optionally: refresh sidebar, close modal, etc.
+      // refresh UI
+      refreshMapProjects();
+      refreshSidebar();
+      // hide modal
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('barModal')).hide();
     })
     .catch(err => {
       console.error('Save project failed', err);
       alert('Failed to save project');
     });
 }
-// Save Project handler
+
+
+
+
+
+
+
 document.getElementById('saveProjectBtn').addEventListener('click', () => {
-  waitForChartsAndDataToRender(() => {
-    saveProjectToDB();
+  waitForChartsAndDataToRender(saveProjectToDB)
+  .then(() => {
+    refreshMapProjects();
+    refreshSidebar();
+    const modalEl = document.getElementById('barModal');
+    const modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modalInstance.hide();
   })
-  
+  .catch(err => console.error('error in waitForChartsAndDataToRender:', err));
+
 });
