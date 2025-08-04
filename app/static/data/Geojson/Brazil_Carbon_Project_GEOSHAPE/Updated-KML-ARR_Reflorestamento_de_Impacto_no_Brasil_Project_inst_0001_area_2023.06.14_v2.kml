@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document id="initial_project_instance_2023.06.14_v2" xsi:schemaLocation="http://www.opengis.net/kml/2.2 http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd http://www.google.com/kml/ext/2.2 http://code.google.com/apis/kml/schema/kml22gx.xsd">
+	<name>initial_project_instance_2023.06.14_v2</name>
+	<Snippet maxLines="0"></Snippet>
+	<Style id="PolyStyle00">
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<LineStyle>
+			<color>ff6e6e6e</color>
+			<width>0.4</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>fffcdcc5</color>
+		</PolyStyle>
+	</Style>
+	<Folder id="FeatureLayer0">
+		<name>initial_project_instance_2023.06.14_v2</name>
+		<Snippet maxLines="0"></Snippet>
+		<Placemark id="ID_00000">
+			<name>MG-0001</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+
+<head>
+
+<META http-equiv="Content-Type" content="text/html">
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+</head>
+
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+
+<td>MG-0001</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+
+<tr>
+
+<td>FID</td>
+
+<td>0</td>
+
+</tr>
+
+<tr bgcolor="#D4E4F3">
+
+<td>Instance</td>
+
+<td>MG-0001</td>
+
+</tr>
+
+<tr>
+
+<td>area_ha</td>
+
+<td>17.68</td>
+
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+
+</table>
+
+</body>
+
+</html>]]></description>
+			<styleUrl>#PolyStyle00</styleUrl>
+			<MultiGeometry>
+				<Polygon>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								-57.8242711334595,-21.59855288755026,0 -57.8243048891855,-21.598737564813,0 -57.82423755045428,-21.59873532032907,0 -57.81903013393406,-21.598561667796,0 -57.818043325706,-21.59852874211218,0 -57.81612518969609,-21.5984647250907,0 -57.81542776773657,-21.59844144341032,0 -57.81470436133809,-21.5984172912048,0 -57.81470111355844,-21.59841735321062,0 -57.81469789360208,-21.59841775474942,0 -57.81469462717126,-21.59840175230054,0 -57.81468956702616,-21.59838039627274,0 -57.8143030237151,-21.59674899365175,0 -57.81482418986732,-21.59677152341402,0 -57.81481756119783,-21.59694500038188,0 -57.81481601581531,-21.59699644289861,0 -57.814815406633,-21.59701672148799,0 -57.81481519907179,-21.59701906135162,0 -57.8148081939757,-21.59709802815741,0 -57.81481868507126,-21.59714578366385,0 -57.81483616926009,-21.59716569460056,0 -57.81488556576762,-21.59722194713163,0 -57.81495217894558,-21.59725030505648,0 -57.81506179848984,-21.59724039257815,0 -57.81508799945478,-21.59735500003194,0 -57.81510906208068,-21.59746485250442,0 -57.81506881056433,-21.59757978615093,0 -57.8151511607167,-21.59767977711155,0 -57.81538078779535,-21.59760694231408,0 -57.81548901821464,-21.597764174046,0 -57.81559340735886,-21.59769195248053,0 -57.81562866502222,-21.5976675594572,0 -57.81569779639842,-21.59761973085224,0 -57.81563299352057,-21.5975114113642,0 -57.81558943141251,-21.59743859578691,0 -57.81565459816706,-21.59720880371302,0 -57.81548550980573,-21.59713792203012,0 -57.81526011169612,-21.59705297422703,0 -57.81518102862379,-21.59703883435936,0 -57.81517394636791,-21.59701574890307,0 -57.81517684839804,-21.59678676774151,0 -57.81722223220014,-21.5968751684756,0 -57.81755117889241,-21.59730595070116,0 -57.81815111330518,-21.59809013437995,0 -57.8185069200337,-21.59772983416559,0 -57.81839356777549,-21.59756430145738,0 -57.81820092418271,-21.59755238211598,0 -57.81807402585662,-21.59748488127393,0 -57.81796252328302,-21.59742806118991,0 -57.81794664412257,-21.59733133052248,0 -57.81799216613352,-21.59724505461025,0 -57.81795342525441,-21.59717353485529,0 -57.81784204383167,-21.59713822713266,0 -57.8177998922665,-21.59714201976408,0 -57.8177536249218,-21.5970956354963,0 -57.81769222385115,-21.59708518064707,0 -57.81765727667219,-21.59700647116223,0 -57.81770306058746,-21.59696680564178,0 -57.81770257721956,-21.59688075582345,0 -57.81770982184062,-21.59680542456073,0 -57.8178703429685,-21.59680020983165,0 -57.82370153211843,-21.59697972571639,0 -57.82392243615878,-21.59700128766662,0 -57.82398112958271,-21.59711511802274,0 -57.82409107371639,-21.59757351814473,0 -57.8242711334595,-21.59855288755026,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</MultiGeometry>
+		</Placemark>
+		<Placemark id="ID_00001">
+			<name>MG-0003</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+
+<head>
+
+<META http-equiv="Content-Type" content="text/html">
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+</head>
+
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+
+<td>MG-0003</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+
+<tr>
+
+<td>FID</td>
+
+<td>1</td>
+
+</tr>
+
+<tr bgcolor="#D4E4F3">
+
+<td>Instance</td>
+
+<td>MG-0003</td>
+
+</tr>
+
+<tr>
+
+<td>area_ha</td>
+
+<td>5.06</td>
+
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+
+</table>
+
+</body>
+
+</html>]]></description>
+			<styleUrl>#PolyStyle00</styleUrl>
+			<MultiGeometry>
+				<Polygon>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								-57.81426959492023,-21.59660790580737,0 -57.81388665659449,-21.59499167438461,0 -57.81488819106578,-21.5950190421055,0 -57.81516468388226,-21.59502659642574,0 -57.81682504851755,-21.59507195112176,0 -57.81683208508422,-21.59524153257518,0 -57.81674286576278,-21.59528380133712,0 -57.81667278159121,-21.59532000031694,0 -57.81660333425437,-21.59546973727473,0 -57.81677672464708,-21.59562425857028,0 -57.81664943571286,-21.59571452088925,0 -57.81652830159615,-21.5957629219783,0 -57.81657396728949,-21.59593002171154,0 -57.81671229322837,-21.59596590148363,0 -57.81675491867404,-21.59602698498528,0 -57.81678959203756,-21.59607667292491,0 -57.81682329688874,-21.59610708528278,0 -57.81709786297462,-21.59635482953847,0 -57.81707921144323,-21.59639017868796,0 -57.81704475360819,-21.59645548434781,0 -57.81721468763195,-21.5966769517395,0 -57.81722276420557,-21.59669891016178,0 -57.81552219831918,-21.5966465122383,0 -57.81531861708292,-21.59664023831428,0 -57.81426959492023,-21.59660790580737,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</MultiGeometry>
+		</Placemark>
+		<Placemark id="ID_00002">
+			<name>MG-0002</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+
+<head>
+
+<META http-equiv="Content-Type" content="text/html">
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+</head>
+
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+
+<td>MG-0002</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+
+<tr>
+
+<td>FID</td>
+
+<td>2</td>
+
+</tr>
+
+<tr bgcolor="#D4E4F3">
+
+<td>Instance</td>
+
+<td>MG-0002</td>
+
+</tr>
+
+<tr>
+
+<td>area_ha</td>
+
+<td>7.91</td>
+
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+
+</table>
+
+</body>
+
+</html>]]></description>
+			<styleUrl>#PolyStyle00</styleUrl>
+			<MultiGeometry>
+				<Polygon>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								-57.82323813768823,-21.59688411619549,0 -57.81778818271775,-21.59671632788373,0 -57.81778141176711,-21.5964153878454,0 -57.81755562559596,-21.59622244419193,0 -57.81756409301256,-21.59608721240184,0 -57.81757064123835,-21.59599463653379,0 -57.81759250853229,-21.59568549568856,0 -57.81747624651731,-21.59559056845986,0 -57.81746155668257,-21.59557857418916,0 -57.81741349834429,-21.59521308778983,0 -57.8174279684944,-21.59508841607822,0 -57.82097802270786,-21.59518532078044,0 -57.82109074265758,-21.59545855679855,0 -57.82112420531557,-21.59557409050902,0 -57.8210460179217,-21.59564618634403,0 -57.82095889309085,-21.59583306243131,0 -57.82107832591996,-21.59593645297997,0 -57.82133208209891,-21.59606427919103,0 -57.82146997606241,-21.59604208563533,0 -57.82168109590224,-21.59608765509326,0 -57.82188907035465,-21.59625514700209,0 -57.82210071706698,-21.59639393645332,0 -57.82228889573437,-21.59645037494829,0 -57.82254848179897,-21.59648812797665,0 -57.82267563248953,-21.59637395854936,0 -57.82271169527309,-21.59614627467084,0 -57.8227752690558,-21.59622191759136,0 -57.82278205304548,-21.59622753863002,0 -57.8229834716454,-21.59639442877814,0 -57.82322736643785,-21.59660858001423,0 -57.82325149679923,-21.59674431343579,0 -57.82327495551682,-21.59687626919474,0 -57.82323813768823,-21.59688411619549,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</MultiGeometry>
+		</Placemark>
+	</Folder>
+</Document>
+</kml>
